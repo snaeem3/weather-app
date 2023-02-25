@@ -7,6 +7,22 @@
     <title>Weather App</title>
   </head>
   <body>
+    <h1>Weather App</h1>
+    <form action="" id="search-form">
+      <label for="search-bar">Enter City</label>
+      <input
+        type="text"
+        name="search-bar"
+        id="search-bar"
+        placeholder="City Name"
+      />
+      <button type="submit" id="city-submit-btn">Submit</button>
+    </form>
+    <div id="error-container" class="error"></div>
+    <h2 id="city"></h2>
+    <div id="weather-icon-container"></div>
+    <p id="temperature"></p>
+    <input type="checkbox" name="degrees-checkbox" id="degrees-checkbox" />
     <script src="main.js" defer></script>
   </body>
 </html>
