@@ -19,35 +19,55 @@ function displayCity(cityName) {
   city.textContent = words.join(' ');
 }
 
-function displayInfo(weatherDataObject) {
-  displayTemperature(weatherDataObject.temperature);
+function displayInfo(weatherDataObject, isMetric = true) {
+  displayTemperature(weatherDataObject.temperature, isMetric);
   displayWeatherDescription(weatherDataObject.weatherDescription);
-  displayFeelsLike(weatherDataObject.feelsLike);
+  displayFeelsLike(weatherDataObject.feelsLike, isMetric);
   displayHumidity(weatherDataObject.humidityPercent);
 
-  function displayTemperature(temperatureData) {
-    temperature.textContent = temperatureData;
+  function displayTemperature(temperatureData, metric) {
+    if (metric) {
+      temperature.textContent = temperatureData;
+    } else {
+      temperature.textContent = celsiusToFahrenheit(temperatureData);
+    }
   }
 
   function displayWeatherDescription(weatherDescriptionData) {
     weatherIconContainer.textContent = weatherDescriptionData;
   }
 
-  function displayFeelsLike(feelsLikeData) {}
+  function displayFeelsLike(feelsLikeData, metric) {}
 
   function displayHumidity(humidityData) {}
 }
 
-function toggleDegrees() {
+function celsiusToFahrenheit(celsiusTemperature) {
+  return (celsiusTemperature * 9) / 5 + 32;
+}
+
+async function toggleDegrees() {
   // Toggle the degrees symbol F or C
+  try {
+    const units = degreesCheckbox.checked ? 'imperial' : 'metric';
+    const newWeatherData = await getWeatherData(city.textContent, units);
+    displayInfo(extractWeatherData(newWeatherData));
+    // displayCity(searchBar.value);
+    clearError();
+  } catch (error) {
+    displayError();
+  }
+
+  // displayInfo(currentWeatherData, degreesCheckbox.checked);
 }
 
 function loadDefaultEventListeners() {
   searchForm.onsubmit = async (event) => {
     try {
       event.preventDefault();
-      // console.log(searchBar.value);
-      const newWeatherData = await getWeatherData(searchBar.value);
+
+      const units = degreesCheckbox.checked ? 'imperial' : 'metric';
+      const newWeatherData = await getWeatherData(searchBar.value, units);
       displayInfo(extractWeatherData(newWeatherData));
       displayCity(searchBar.value);
       clearError();
