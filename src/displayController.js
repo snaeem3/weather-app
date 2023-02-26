@@ -6,7 +6,8 @@ const searchForm = document.querySelector('#search-form');
 const searchBar = document.querySelector('#search-bar');
 const errorContainer = document.querySelector('#error-container');
 const weatherIconContainer = document.querySelector('#weather-icon-container');
-const temperature = document.querySelector('#temperature');
+const temperatureContainer = document.querySelector('#temperature');
+const feelsLikeContainer = document.querySelector('#feels-like');
 const degreesCheckbox = document.querySelector('#degrees-checkbox');
 
 function displayCity(cityName) {
@@ -20,24 +21,34 @@ function displayCity(cityName) {
 }
 
 function displayInfo(weatherDataObject, isMetric = true) {
-  displayTemperature(weatherDataObject.temperature, isMetric);
   displayWeatherDescription(weatherDataObject.weatherDescription);
+  displayTemperature(weatherDataObject.temperature, isMetric);
   displayFeelsLike(weatherDataObject.feelsLike, isMetric);
   displayHumidity(weatherDataObject.humidityPercent);
-
-  function displayTemperature(temperatureData, metric) {
-    if (metric) {
-      temperature.textContent = temperatureData;
-    } else {
-      temperature.textContent = celsiusToFahrenheit(temperatureData);
-    }
-  }
 
   function displayWeatherDescription(weatherDescriptionData) {
     weatherIconContainer.textContent = weatherDescriptionData;
   }
 
-  function displayFeelsLike(feelsLikeData, metric) {}
+  function displayTemperature(temperatureData, metric) {
+    if (metric) {
+      temperatureContainer.textContent = `${Math.round(temperatureData)} °C`;
+    } else {
+      temperatureContainer.textContent = `${Math.round(temperatureData)} °F`;
+    }
+  }
+
+  function displayFeelsLike(feelsLikeData, metric) {
+    if (metric) {
+      feelsLikeContainer.textContent = `Feels like ${Math.round(
+        feelsLikeData
+      )} °C`;
+    } else {
+      feelsLikeContainer.textContent = `Feels like ${Math.round(
+        feelsLikeData
+      )} °F`;
+    }
+  }
 
   function displayHumidity(humidityData) {}
 }
@@ -51,14 +62,12 @@ async function toggleDegrees() {
   try {
     const units = degreesCheckbox.checked ? 'imperial' : 'metric';
     const newWeatherData = await getWeatherData(city.textContent, units);
-    displayInfo(extractWeatherData(newWeatherData));
+    displayInfo(extractWeatherData(newWeatherData), units === 'metric');
     // displayCity(searchBar.value);
     clearError();
   } catch (error) {
     displayError();
   }
-
-  // displayInfo(currentWeatherData, degreesCheckbox.checked);
 }
 
 function loadDefaultEventListeners() {
@@ -68,7 +77,7 @@ function loadDefaultEventListeners() {
 
       const units = degreesCheckbox.checked ? 'imperial' : 'metric';
       const newWeatherData = await getWeatherData(searchBar.value, units);
-      displayInfo(extractWeatherData(newWeatherData));
+      displayInfo(extractWeatherData(newWeatherData), units === 'metric');
       displayCity(searchBar.value);
       clearError();
     } catch (error) {
