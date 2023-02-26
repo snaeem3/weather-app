@@ -10,7 +10,13 @@ const temperature = document.querySelector('#temperature');
 const degreesCheckbox = document.querySelector('#degrees-checkbox');
 
 function displayCity(cityName) {
-  city.textContent = cityName;
+  let words = cityName.toLowerCase();
+  words = words.split(' ');
+  for (let i = 0; i < words.length; i += 1) {
+    words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+  }
+  // city.textContent = cityName;
+  city.textContent = words.join(' ');
 }
 
 function displayInfo(weatherDataObject) {
@@ -43,6 +49,7 @@ function loadDefaultEventListeners() {
       // console.log(searchBar.value);
       const newWeatherData = await getWeatherData(searchBar.value);
       displayInfo(extractWeatherData(newWeatherData));
+      displayCity(searchBar.value);
       clearError();
     } catch (error) {
       displayError();
