@@ -21,10 +21,21 @@ function displayCity(cityName) {
 }
 
 function displayInfo(weatherDataObject, isMetric = true) {
-  displayWeatherDescription(weatherDataObject.weatherDescription);
+  displayIcon(weatherDataObject.icon);
+  // displayWeatherDescription(weatherDataObject.weatherDescription);
   displayTemperature(weatherDataObject.temperature, isMetric);
   displayFeelsLike(weatherDataObject.feelsLike, isMetric);
   displayHumidity(weatherDataObject.humidityPercent);
+  displaySunriseSunset(
+    weatherDataObject.sunRise,
+    weatherDataObject.sunSet,
+    weatherDataObject.timeZone
+  );
+  console.log(weatherDataObject);
+
+  function displayIcon(weatherIcon) {
+    weatherIconContainer.style.backgroundImage = `url(http://openweathermap.org/img/wn/${weatherIcon}@2x.png)`;
+  }
 
   function displayWeatherDescription(weatherDescriptionData) {
     weatherIconContainer.textContent = weatherDescriptionData;
@@ -51,6 +62,22 @@ function displayInfo(weatherDataObject, isMetric = true) {
   }
 
   function displayHumidity(humidityData) {}
+
+  function displaySunriseSunset(sunriseData, sunsetData, timezoneOffset) {
+    const sunriseDate = new Date(sunriseData * 1000);
+    const sunsetDate = new Date(sunsetData * 1000);
+    const sunriseHours =
+      (sunriseDate.getUTCHours() + timezoneOffset / 60 / 60) % 24;
+    const sunriseMinutes = sunriseDate.getUTCMinutes();
+    const sunsetHours =
+      (sunsetDate.getUTCHours() + timezoneOffset / 60 / 60) % 24;
+    const sunsetMinutes = sunsetDate.getUTCMinutes();
+    // console.log(sunriseDate.toUTCString());
+    // console.log(
+    //   `hours: ${(sunriseDate.getUTCHours() + timezoneOffset / 60 / 60) % 24}`
+    // );
+    // console.log(`minutes: ${sunriseDate.getUTCMinutes()}`);
+  }
 }
 
 function celsiusToFahrenheit(celsiusTemperature) {
