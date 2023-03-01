@@ -115,63 +115,125 @@ h2 {
   background-size: cover;
 }
 
-.toggle-switch {
-  display: inline-block;
+/* Sunrise sunset styling */
+/* .circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #eee;
   position: relative;
-  height: 24px;
-  width: 48px;
-  border-radius: 12px;
-  background-color: #ccc;
-  transition: background-color 0.2s ease;
 }
 
-.toggle-switch .toggle-input {
-  display: none;
+.point {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #333;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.toggle-switch .toggle-label {
+.point1 {
+  transform: translate(-50%, -50%) rotate(calc(var(--percentage1) * 3.6deg));
+}
+
+.point2 {
+  transform: translate(-50%, -50%) rotate(calc(var(--percentage2) * 3.6deg));
+}
+
+.overlay {
+  width: 100%;
+  height: 50%;
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 1;
+} */
+.circle {
+  width: 200px;
+  height: 200px;
+  background-color: #ff0000;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+.point {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.point1 {
+  top: 50%;
+  left: 0%;
+}
+.point2 {
+  top: 50%;
+  left: 100%;
+}
+.mask {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background-color: #f1f1f1;
+  transform: translate(-50%, 0%);
+  z-index: 1;
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* Toggle switch styling */
+input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.check-trail {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-  color: #fff;
+  width: 9em;
+  height: 5em;
+  background: #2c3e50;
+  border-radius: 2.5em;
+  transition: all 0.5s ease;
   cursor: pointer;
-  transition: color 0.2s ease;
 }
 
-.toggle-switch .toggle-label:first-child {
-  z-index: 2;
-}
-
-.toggle-switch .toggle-label:last-child {
-  z-index: 1;
-}
-
-.toggle-switch .toggle-input:checked ~ .toggle-label:first-child {
-  color: #ccc;
-}
-
-.toggle-switch .toggle-input:checked ~ .toggle-label:last-child {
-  color: #fff;
-}
-
-.toggle-switch .toggle-handle {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
+.check-handler {
+  display: flex;
+  margin-left: 0.5em;
+  justify-content: center;
+  align-items: center;
+  width: 4em;
+  height: 4em;
+  background: #34495e;
   border-radius: 50%;
-  background-color: #fff;
-  transition: transform 0.2s ease;
+  transition: all 0.5s ease;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+.check-handler:before {
+  content: "C";
+  color: white;
+  font-size: 2em;
+  font-weight: bold;
 }
 
-.toggle-switch .toggle-input:checked ~ .toggle-handle {
-  transform: translateX(24px);
+input[type="checkbox"]:checked + .check-trail {
+  background: #16a085;
+}
+input[type="checkbox"]:checked + .check-trail .check-handler {
+  margin-left: 50%;
+  background: #1abc9c;
+}
+input[type="checkbox"]:checked + .check-trail .check-handler::before {
+  content: "F";
 }
