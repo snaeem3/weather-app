@@ -6,11 +6,22 @@ const searchForm = document.querySelector('#search-form');
 const searchBar = document.querySelector('#search-bar');
 const errorContainer = document.querySelector('#error-container');
 const weatherIconContainer = document.querySelector('#weather-icon-container');
+const weatherDescriptionContainer = document.querySelector(
+  '#weather-description-container'
+);
 const temperatureContainer = document.querySelector('#temperature');
 const feelsLikeContainer = document.querySelector('#feels-like');
+const humidityContainer = document.querySelector('#humidity-data');
+const pressureContainer = document.querySelector('#pressure-data');
+const windContainer = document.querySelector('#wind-data');
 const sunriseSunsetContainer = document.querySelector(
   '#sunrise-sunset-container'
 );
+const sunriseSunsetIconContainer = document.querySelector(
+  '#sunrise-sunset-icons'
+);
+const sunRiseTime = document.querySelector('#sunrise-time');
+const sunSetTime = document.querySelector('#sunset-time');
 const degreesCheckbox = document.querySelector('#degrees-checkbox');
 
 function displayCity(cityName) {
@@ -25,14 +36,21 @@ function displayCity(cityName) {
 
 function displayInfo(weatherDataObject, isMetric = true) {
   displayIcon(weatherDataObject.icon);
-  // displayWeatherDescription(weatherDataObject.weatherDescription);
+  displayWeatherDescription(weatherDataObject.weatherDescription);
   displayTemperature(weatherDataObject.temperature, isMetric);
   displayFeelsLike(weatherDataObject.feelsLike, isMetric);
   displayHumidity(weatherDataObject.humidityPercent);
+  displayPressure(weatherDataObject.pressure);
+  displayWind(
+    weatherDataObject.windSpeed,
+    weatherDataObject.windDirection,
+    isMetric
+  );
   displaySunriseSunset(
     weatherDataObject.sunRise,
     weatherDataObject.sunSet,
-    weatherDataObject.timeZone
+    weatherDataObject.timeZone,
+    weatherDataObject.time
   );
 
   // drawCircle(50, 75);
@@ -43,7 +61,7 @@ function displayInfo(weatherDataObject, isMetric = true) {
   }
 
   function displayWeatherDescription(weatherDescriptionData) {
-    weatherIconContainer.textContent = weatherDescriptionData;
+    weatherDescriptionContainer.textContent = weatherDescriptionData;
   }
 
   function displayTemperature(temperatureData, metric) {
@@ -66,7 +84,36 @@ function displayInfo(weatherDataObject, isMetric = true) {
     }
   }
 
-  function displayHumidity(humidityData) {}
+  function displayHumidity(humidityData) {
+    humidityContainer.textContent = `${humidityData}%`;
+  }
+
+  function displayPressure(pressureData) {
+    pressureContainer.textContent = `${pressureData} hPa`;
+  }
+
+  function displayWind(windSpeed, windDirection, metric) {
+    const windUnits = isMetric ? 'm/s' : 'mph';
+    windContainer.textContent = `${windSpeed} ${windUnits} ${degToDirection(
+      windDirection
+    )}`;
+
+    function degToDirection(degrees) {
+      // Define array of directions
+      const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+      // Split into the 8 directions
+      let index = (degrees * 8) / 360;
+
+      // Round to nearest integer.
+      index = Math.round(index, 0);
+
+      // Ensure it's within 0-7
+      index = (index + 8) % 8;
+
+      return directions[index];
+    }
+  }
 
   function displaySunriseSunset(sunriseData, sunsetData, timezoneOffset) {
     const sunriseDate = new Date(sunriseData * 1000);
@@ -77,7 +124,13 @@ function displayInfo(weatherDataObject, isMetric = true) {
     const sunsetHours =
       (sunsetDate.getUTCHours() + timezoneOffset / 60 / 60) % 24;
     const sunsetMinutes = sunsetDate.getUTCMinutes();
-    // console.log(`Sunrise: ${sunriseDate.toUTCString()}`);
+    const timeDate = new Date();
+    const timeHours = (timeDate.getUTCHours() + timezoneOffset / 60 / 60) % 24;
+    const timeMinutes = timeDate.getUTCMinutes();
+
+    sunRiseTime.textContent = ` ${getLocalTime(sunriseData, timezoneOffset)}`;
+    sunSetTime.textContent = ` ${getLocalTime(sunsetData, timezoneOffset)}`;
+    // console.log(`Sunset: ${sunsetDate.toUTCString()}`);
     // console.log(
     //   `hours: ${(sunriseDate.getUTCHours() + timezoneOffset / 60 / 60) % 24}`
     // );
@@ -87,18 +140,33 @@ function displayInfo(weatherDataObject, isMetric = true) {
     //   `hours: ${(sunsetDate.getUTCHours() + timezoneOffset / 60 / 60) % 24}`
     // );
     // console.log(`minutes: ${sunsetDate.getUTCMinutes()}`);
-    while (sunriseSunsetContainer.firstChild) {
-      sunriseSunsetContainer.removeChild(sunriseSunsetContainer.firstChild);
+    while (sunriseSunsetIconContainer.firstChild) {
+      sunriseSunsetIconContainer.removeChild(
+        sunriseSunsetIconContainer.firstChild
+      );
     }
-    sunriseSunsetContainer.appendChild(
+    sunriseSunsetIconContainer.appendChild(
       drawCircleWithPercentagePoints(
         ((sunriseHours + sunriseMinutes / 60) / 24) * 100,
-        ((sunsetHours + sunsetMinutes / 60) / 24) * 100
-        // (6 / 24) * 100,
-        // (19 / 24) * 100
+        ((sunsetHours + sunsetMinutes / 60) / 24) * 100,
+        ((timeHours + timeMinutes / 60) / 24) * 100
       )
     );
   }
+}
+
+function getLocalTime(utc, timezoneOffset) {
+  // Convert the UTC time to milliseconds
+  const time = new Date(utc * 1000);
+
+  // Adjust for the timezone offset
+  const localTime = new Date(time.valueOf() + timezoneOffset * 1000);
+
+  // Format the local time as a string
+  const hours = localTime.getUTCHours().toString().padStart(2, '0');
+  const minutes = localTime.getMinutes().toString().padStart(2, '0');
+  const seconds = localTime.getSeconds().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
 }
 
 function celsiusToFahrenheit(celsiusTemperature) {
@@ -118,7 +186,8 @@ async function toggleDegrees() {
   }
 }
 
-function drawCircleWithPercentagePoints(percentage1, percentage2) {
+function drawCircleWithPercentagePoints(percentage1, percentage2, percentage3) {
+  console.log(percentage3);
   const canvas = document.createElement('canvas');
   const diameter = 200;
   canvas.width = diameter * 1.25;
@@ -136,13 +205,16 @@ function drawCircleWithPercentagePoints(percentage1, percentage2) {
   // const angle2 = startAngle + (percentage2 / 100) * 2 * Math.PI;
   const angle1 = (1 - percentage1 / 100) * 2 * Math.PI + Math.PI / 2;
   const angle2 = (1 - percentage2 / 100) * 2 * Math.PI + Math.PI / 2;
+  const angle3 = (1 - percentage3 / 100) * 2 * Math.PI + Math.PI / 2;
   const x1 = centerX + radius * Math.cos(angle1);
   const y1 = centerY + radius * Math.sin(angle1);
   const x2 = centerX + radius * Math.cos(angle2);
   const y2 = centerY + radius * Math.sin(angle2);
+  const x3 = centerX + radius * Math.cos(angle3);
+  const y3 = centerX + radius * Math.sin(angle3);
 
+  // Day Arc
   context.beginPath();
-  // context.arc(centerX, centerY, radius, angle2, angle1);
   context.arc(
     centerX,
     centerY,
@@ -151,36 +223,45 @@ function drawCircleWithPercentagePoints(percentage1, percentage2) {
     (1 - percentage2 / 100) * 2 * Math.PI + Math.PI / 2,
     true
   );
-  context.lineWidth = 10;
-  context.strokeStyle = `rgb(255, 191, 28)`;
-  // const gradient = context.createLinearGradient(x1, y1, x2, y2);
-  // gradient.addColorStop('0', 'red');
-  // gradient.addColorStop('0.5', 'yellow');
-  // gradient.addColorStop('1.0', 'orangeyellow');
+  context.lineWidth = 5;
+  context.strokeStyle = `rgb(135, 206, 235)`;
+  let gradient = context.createLinearGradient(x1, y1, x2, y2);
   // context.strokeStyle = gradient;
   context.stroke();
 
-  // context.beginPath();
-  // context.arc(centerX, centerY, radius, angle1, angle2);
-  // context.lineWidth = 8;
-  // context.strokeStyle = `rgb(0,0,0)`;
-  // context.stroke();
-
+  // Night arc
   context.beginPath();
-  context.arc(x1, y1, 15, 0, 2 * Math.PI);
+  context.arc(centerX, centerY, radius, angle1, angle2);
+  context.lineWidth = 4;
+  context.strokeStyle = `rgb(0,0,0)`;
+  gradient = context.createLinearGradient(x1, y1, x2, y2);
+  gradient.addColorStop('0', 'blue');
+  // gradient.addColorStop('0.5', 'indigo');
+  gradient.addColorStop('1.0', 'indigo');
+  // context.strokeStyle = gradient;
+  context.stroke();
+
+  // Sunrise icon
+  context.beginPath();
+  context.arc(x1, y1, 15, 0, 1 * Math.PI, true);
+  context.fillStyle = `rgb(236, 93, 255)`;
   context.fill();
 
+  // Sunset icon
   context.beginPath();
-  context.arc(x2, y2, 15, 0, 2 * Math.PI);
+  context.arc(x2, y2, 15, 0, 1 * Math.PI, true);
+  context.fillStyle = `rgb(255, 30, 30)`;
+  context.fill();
+
+  // Sun icon
+  context.beginPath();
+  context.arc(x3, y3, 15, 0, 2 * Math.PI);
+  context.fillStyle = `orange`;
   context.fill();
 
   const result = document.createElement('div');
   result.appendChild(canvas);
   return result;
-
-  function degrees_to_radians(degrees) {
-    return degrees * (Math.PI / 180);
-  }
 }
 
 function loadDefaultEventListeners() {

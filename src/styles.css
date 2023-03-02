@@ -58,6 +58,7 @@ body {
   align-items: center;
   gap: 1rem;
   background: rgba(241, 241, 241, 0.849);
+  font-size: 1.25rem;
 }
 
 body > * {
@@ -65,7 +66,7 @@ body > * {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 4rem;
 }
 
 #search-form {
@@ -88,11 +89,10 @@ input[type="text"] {
   padding: 1rem;
   background-color: inherit;
   vertical-align: top;
-  /* margin: 0 -2rem; */
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 3rem;
 }
 
 .error {
@@ -104,7 +104,8 @@ h2 {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  background: var(--primary-color);
+  background: white;
+  border: solid 1px rgba(0, 0, 0);
   border-radius: var(--border-radius-default);
   padding: 2rem;
 }
@@ -113,83 +114,89 @@ h2 {
   padding: 4rem;
   background: no-repeat center center;
   background-size: cover;
+  position: relative;
+}
+
+#weather-description-container {
+  opacity: 0;
+  position: absolute;
+  width: max-content;
+  left: 50%;
+  transform: translateX(-50%) translateY(200%);
+  transition: opacity 250ms ease-in-out;
+  /* transition-delay: 250ms; */
+}
+
+#weather-icon-container:hover #weather-description-container {
+  opacity: 1;
+}
+
+table {
+  table-layout: fixed;
+  /* width: 100%; */
+  border-collapse: collapse;
+  /* background: rgb(196, 236, 255); */
+  border-radius: var(--border-radius-default);
+  /* padding: var(--section-padding); */
+}
+
+table td {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+table td:first-child {
+  border-left: none;
+}
+
+table td:last-child {
+  border-right: none;
+}
+
+th {
+  text-align: center;
+  width: 33%;
+  padding: 0.5rem;
+}
+
+td {
+  padding: 0.5rem;
+  text-align: center;
+  letter-spacing: 1px;
 }
 
 /* Sunrise sunset styling */
-/* .circle {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: #eee;
-  position: relative;
+#sunrise-sunset-container {
+  display: grid;
+  place-items: center;
 }
 
-.point {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #333;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+#sunrise-sunset-container > * {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.point1 {
-  transform: translate(-50%, -50%) rotate(calc(var(--percentage1) * 3.6deg));
+#sunrise-sunset-times > li::before {
+  /* Unicode for a bullet */
+
+  /* Styles for Indentation*/
+
+  display: inline-block;
+  /* width: 0.5em; */
+  /* margin-left: -0.5em; */
+  /* font-size: 2rem; */
+  font-weight: bold;
 }
 
-.point2 {
-  transform: translate(-50%, -50%) rotate(calc(var(--percentage2) * 3.6deg));
+#sunrise-time::before {
+  content: "Sunrise";
+  color: rgb(236, 93, 255);
 }
 
-.overlay {
-  width: 100%;
-  height: 50%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  z-index: 1;
-} */
-.circle {
-  width: 200px;
-  height: 200px;
-  background-color: #ff0000;
-  border-radius: 50%;
-  position: relative;
-  overflow: hidden;
+#sunset-time::before {
+  content: "Sunset";
+  color: rgb(255, 30, 30);
 }
-.point {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #000;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-.point1 {
-  top: 50%;
-  left: 0%;
-}
-.point2 {
-  top: 50%;
-  left: 100%;
-}
-.mask {
-  position: absolute;
-  width: 200%;
-  height: 100%;
-  background-color: #f1f1f1;
-  transform: translate(-50%, 0%);
-  z-index: 1;
-  clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 50%);
-}
-
 /* Toggle switch styling */
 input[type="checkbox"] {
   position: absolute;
