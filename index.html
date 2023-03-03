@@ -7,52 +7,66 @@
     <title>Weather App</title>
   </head>
   <body>
-    <h1>Weather App</h1>
-    <form action="" id="search-form">
-      <!-- <label for="search-bar">Enter City</label> -->
-      <input
-        type="text"
-        name="search-bar"
-        id="search-bar"
-        placeholder="City Name"
-      />
-      <button type="submit" id="city-submit-btn"></button>
-    </form>
-    <div id="error-container" class="error"></div>
-    <div id="weather-data-container">
-      <h2 id="city"></h2>
-      <div id="weather-icon-container">
-        <div id="weather-description-container"></div>
-      </div>
-      <h3 id="temperature"></h3>
-      <p id="feels-like"></p>
-      <table id="weather-data-table">
-        <thead>
-          <tr class="data-headers">
-            <th>Humidity</th>
-            <th>Pressure</th>
-            <th>Wind</th>
+    <main>
+      <h1>Weather App</h1>
+      <form action="" id="search-form">
+        <!-- <label for="search-bar">Enter City</label> -->
+        <input
+          type="text"
+          name="search-bar"
+          id="search-bar"
+          placeholder="City Name"
+        />
+        <button type="submit" id="city-submit-btn"></button>
+      </form>
+      <div id="error-container" class="error"></div>
+      <div id="weather-data-container">
+        <div id="loading" class="active">Loading...</div>
+        <h2 id="city"></h2>
+        <div id="weather-temperature-container">
+          <div id="weather-icon-container">
+            <div id="weather-description-container"></div>
+          </div>
+          <div id="temperature-container">
+            <h3 id="temperature"></h3>
+            <p id="feels-like"></p>
+          </div>
+        </div>
+        <table id="weather-data-table">
+          <thead>
+            <tr class="data-headers">
+              <th>Humidity</th>
+              <th>Pressure</th>
+              <th>Wind</th>
+            </tr>
+          </thead>
+          <tr class="data-row">
+            <td id="humidity-data"></td>
+            <td id="pressure-data"></td>
+            <td id="wind-data"></td>
           </tr>
-        </thead>
-        <tr class="data-row">
-          <td id="humidity-data"></td>
-          <td id="pressure-data"></td>
-          <td id="wind-data"></td>
-        </tr>
-      </table>
-      <div id="sunrise-sunset-container">
-        <div id="sunrise-sunset-icons"></div>
-        <ul id="sunrise-sunset-times">
-          <li id="sunrise-time"></li>
-          <li id="sunset-time"></li>
-        </ul>
+        </table>
+        <div id="sunrise-sunset-container">
+          <div id="sunrise-sunset-icons"></div>
+          <ul id="sunrise-sunset-times">
+            <li id="sunrise-time"></li>
+            <li id="sunset-time"></li>
+          </ul>
+        </div>
       </div>
-      <!-- Insert other weather data here -->
-    </div>
-    <input type="checkbox" name="degrees-checkbox" id="degrees-checkbox" />
-    <label for="degrees-checkbox" class="check-trail"
-      ><span class="check-handler"></span
-    ></label>
+      <input type="checkbox" name="degrees-checkbox" id="degrees-checkbox" />
+      <label for="degrees-checkbox" class="check-trail"
+        ><span class="check-handler"></span
+      ></label>
+    </main>
+    <footer>
+      Data acquired from <a href="https://openweathermap.org/">OpenWeather</a> |
+      Website by Sameer N
+      <a href="https://github.com/snaeem3"
+        ><img src="/src/images/github.svg" class="icon"
+      /></a>
+    </footer>
+    <!-- <div id="loading">Loading...</div> -->
     <script src="main.js" defer></script>
   </body>
 </html>
