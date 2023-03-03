@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oxygen&display=swap");
 
 :root {
   --section-padding: 8px;
-  --section-margin: 8px;
+  --section-margin: 1rem;
   --border-radius-default: 0.75rem;
-  --primary-color: #00ffff;
+  --primary-color: #9aa9fd;
   --primary-color-dark: #008181;
   --shade-color: #494949da;
   --color-shadow: grey;
@@ -16,7 +16,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Libre Franklin", sans-serif;
+  font-family: "Oxygen", sans-serif;
 }
 
 button,
@@ -40,7 +40,8 @@ button {
 
 button:not(:disabled),
 input:not(:disabled),
-input:not(:disabled) + label {
+input:not(:disabled) + label,
+a {
   cursor: pointer;
 }
 
@@ -53,15 +54,18 @@ ul {
 }
 
 body {
+  background: rgba(241, 241, 241, 0.849);
+}
+
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  background: rgba(241, 241, 241, 0.849);
   font-size: 1.25rem;
 }
 
-body > * {
+main > * {
   padding: var(--section-padding);
 }
 
@@ -83,12 +87,13 @@ input[type="text"] {
 #city-submit-btn {
   position: absolute;
   right: 1rem;
+  top: 0.75rem;
   background-image: url("/src/images/magnify.svg");
   background-repeat: no-repeat;
   background-size: cover;
   padding: 1rem;
   background-color: inherit;
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 
 h2 {
@@ -105,9 +110,24 @@ h2 {
   align-items: center;
   gap: 0.5rem;
   background: white;
-  border: solid 1px rgba(0, 0, 0);
+  /* border: solid 1px rgba(0, 0, 0); */
   border-radius: var(--border-radius-default);
-  padding: 2rem;
+  padding: 1rem;
+  box-shadow: 2px 5px 5px var(--color-shadow);
+  position: relative;
+}
+
+/* Hide all child elements except #loading when actively fetching data */
+#weather-data-container:has(.active) > :not(#loading) {
+  opacity: 0;
+}
+#weather-data-container:has(.active) {
+  background: #5c5c5caf;
+}
+
+#weather-temperature-container {
+  display: flex;
+  align-items: center;
 }
 
 #weather-icon-container {
@@ -124,11 +144,26 @@ h2 {
   left: 50%;
   transform: translateX(-50%) translateY(200%);
   transition: opacity 250ms ease-in-out;
+  font-style: italic;
+  color: rgb(63, 63, 63);
   /* transition-delay: 250ms; */
 }
 
 #weather-icon-container:hover #weather-description-container {
   opacity: 1;
+}
+
+#temperature-container {
+  padding: var(--section-padding);
+  text-align: right;
+}
+
+#temperature {
+  font-size: 2rem;
+}
+
+#feels-like {
+  font-size: 1rem;
 }
 
 table {
@@ -138,11 +173,12 @@ table {
   /* background: rgb(196, 236, 255); */
   border-radius: var(--border-radius-default);
   /* padding: var(--section-padding); */
+  /* border-top: solid 1px gray; */
 }
 
 table td {
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
 }
 
 table td:first-child {
@@ -160,9 +196,10 @@ th {
 }
 
 td {
-  padding: 0.5rem;
+  padding: 1rem;
   text-align: center;
   letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 /* Sunrise sunset styling */
@@ -197,6 +234,7 @@ td {
   content: "Sunset";
   color: rgb(255, 30, 30);
 }
+
 /* Toggle switch styling */
 input[type="checkbox"] {
   position: absolute;
@@ -207,8 +245,8 @@ input[type="checkbox"] {
 .check-trail {
   display: flex;
   align-items: center;
-  width: 9em;
-  height: 5em;
+  width: 8em;
+  height: 4em;
   background: #2c3e50;
   border-radius: 2.5em;
   transition: all 0.5s ease;
@@ -220,8 +258,8 @@ input[type="checkbox"] {
   margin-left: 0.5em;
   justify-content: center;
   align-items: center;
-  width: 4em;
-  height: 4em;
+  width: 3em;
+  height: 3em;
   background: #34495e;
   border-radius: 50%;
   transition: all 0.5s ease;
@@ -243,4 +281,29 @@ input[type="checkbox"]:checked + .check-trail .check-handler {
 }
 input[type="checkbox"]:checked + .check-trail .check-handler::before {
   content: "F";
+}
+
+footer {
+  background: var(--primary-color);
+  text-align: center;
+  margin-top: var(--section-margin);
+  padding: var(--section-padding);
+}
+
+.icon {
+  vertical-align: bottom;
+}
+
+#loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  color: white;
+  font-size: 3rem;
 }

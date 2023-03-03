@@ -5,6 +5,7 @@ const city = document.querySelector('#city');
 const searchForm = document.querySelector('#search-form');
 const searchBar = document.querySelector('#search-bar');
 const errorContainer = document.querySelector('#error-container');
+const weatherDataContainer = document.querySelector('#weather-data-container');
 const weatherIconContainer = document.querySelector('#weather-icon-container');
 const weatherDescriptionContainer = document.querySelector(
   '#weather-description-container'
@@ -23,6 +24,7 @@ const sunriseSunsetIconContainer = document.querySelector(
 const sunRiseTime = document.querySelector('#sunrise-time');
 const sunSetTime = document.querySelector('#sunset-time');
 const degreesCheckbox = document.querySelector('#degrees-checkbox');
+const loadingDiv = document.querySelector('#loading');
 
 function displayCity(cityName) {
   let words = cityName.toLowerCase();
@@ -30,7 +32,6 @@ function displayCity(cityName) {
   for (let i = 0; i < words.length; i += 1) {
     words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
   }
-  // city.textContent = cityName;
   city.textContent = words.join(' ');
 }
 
@@ -52,9 +53,6 @@ function displayInfo(weatherDataObject, isMetric = true) {
     weatherDataObject.timeZone,
     weatherDataObject.time
   );
-
-  // drawCircle(50, 75);
-  console.log(weatherDataObject);
 
   function displayIcon(weatherIcon) {
     weatherIconContainer.style.backgroundImage = `url(http://openweathermap.org/img/wn/${weatherIcon}@2x.png)`;
@@ -187,7 +185,6 @@ async function toggleDegrees() {
 }
 
 function drawCircleWithPercentagePoints(percentage1, percentage2, percentage3) {
-  console.log(percentage3);
   const canvas = document.createElement('canvas');
   const diameter = 200;
   canvas.width = diameter * 1.25;
@@ -269,6 +266,7 @@ function loadDefaultEventListeners() {
     try {
       event.preventDefault();
 
+      displayLoadMessage();
       const units = degreesCheckbox.checked ? 'imperial' : 'metric';
       const newWeatherData = await getWeatherData(searchBar.value, units);
       displayInfo(extractWeatherData(newWeatherData), units === 'metric');
@@ -277,6 +275,7 @@ function loadDefaultEventListeners() {
     } catch (error) {
       displayError();
     }
+    clearLoadMessage();
   };
 
   degreesCheckbox.addEventListener('change', toggleDegrees);
@@ -293,4 +292,19 @@ function clearError() {
   errorContainer.textContent = '';
 }
 
-export { displayCity, displayInfo, loadDefaultEventListeners };
+function displayLoadMessage() {
+  loadingDiv.style.display = 'flex';
+  loadingDiv.classList.add('active');
+}
+
+function clearLoadMessage() {
+  loadingDiv.style.display = 'none';
+  loadingDiv.classList.remove('active');
+}
+
+export {
+  displayCity,
+  displayInfo,
+  loadDefaultEventListeners,
+  clearLoadMessage,
+};

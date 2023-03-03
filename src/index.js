@@ -3,6 +3,7 @@ import {
   displayCity,
   displayInfo,
   loadDefaultEventListeners,
+  clearLoadMessage,
 } from './displayController';
 import { getWeatherData } from './utils/api';
 import extractWeatherData from './extractWeatherData';
@@ -14,11 +15,12 @@ main();
 
 async function main() {
   const weatherData = await getWeatherData(STARTING_CITY);
-  console.log(weatherData);
-  console.log(`Temperature: ${weatherData.main.temp}`);
-  console.table(extractWeatherData(weatherData));
+  // console.log(weatherData);
+  // console.log(`Temperature: ${weatherData.main.temp}`);
+  // console.table(extractWeatherData(weatherData));
 
   displayCity(STARTING_CITY);
   displayInfo(extractWeatherData(weatherData));
+  clearLoadMessage();
   loadDefaultEventListeners();
 }
