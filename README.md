@@ -1,6 +1,7 @@
 # weather-app
 
 ## [Live View](https://snaeem3.github.io/weather-app)
+![Weather-app](https://user-images.githubusercontent.com/11710951/222871966-8515363b-fd45-411e-9c16-9601d57edc86.PNG)
 
 This project showcases a Weather application that displays the current weather for a user-specified city by fetching data from [OpenWeather API](https://openweathermap.org/) as a part of the [Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-weather-app) curriculum.
 
