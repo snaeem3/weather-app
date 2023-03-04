@@ -190,16 +190,10 @@ function drawCircleWithPercentagePoints(percentage1, percentage2, percentage3) {
   canvas.width = diameter * 1.25;
   canvas.height = diameter * 1.25;
   const context = canvas.getContext('2d');
-  // const centerX = diameter / 2;
-  // const centerY = diameter / 2;
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
   const radius = diameter / 2 - 10;
-  // const startAngle = (3 * Math.PI) / 2;
-  // const endAngle = startAngle + 2 * Math.PI;
 
-  // const angle1 = startAngle + (percentage1 / 100) * 2 * Math.PI;
-  // const angle2 = startAngle + (percentage2 / 100) * 2 * Math.PI;
   const angle1 = (1 - percentage1 / 100) * 2 * Math.PI + Math.PI / 2;
   const angle2 = (1 - percentage2 / 100) * 2 * Math.PI + Math.PI / 2;
   const angle3 = (1 - percentage3 / 100) * 2 * Math.PI + Math.PI / 2;

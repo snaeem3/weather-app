@@ -214,14 +214,7 @@ td {
 }
 
 #sunrise-sunset-times > li::before {
-  /* Unicode for a bullet */
-
-  /* Styles for Indentation*/
-
   display: inline-block;
-  /* width: 0.5em; */
-  /* margin-left: -0.5em; */
-  /* font-size: 2rem; */
   font-weight: bold;
 }
 
