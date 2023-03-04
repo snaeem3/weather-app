@@ -128,16 +128,8 @@ function displayInfo(weatherDataObject, isMetric = true) {
 
     sunRiseTime.textContent = ` ${getLocalTime(sunriseData, timezoneOffset)}`;
     sunSetTime.textContent = ` ${getLocalTime(sunsetData, timezoneOffset)}`;
-    // console.log(`Sunset: ${sunsetDate.toUTCString()}`);
-    // console.log(
-    //   `hours: ${(sunriseDate.getUTCHours() + timezoneOffset / 60 / 60) % 24}`
-    // );
-    // console.log(`minutes: ${sunriseDate.getUTCMinutes()}`);
-    // console.log(`Sunset: ${sunsetDate.toUTCString()}`);
-    // console.log(
-    //   `hours: ${(sunsetDate.getUTCHours() + timezoneOffset / 60 / 60) % 24}`
-    // );
-    // console.log(`minutes: ${sunsetDate.getUTCMinutes()}`);
+
+    // Remove current icon
     while (sunriseSunsetIconContainer.firstChild) {
       sunriseSunsetIconContainer.removeChild(
         sunriseSunsetIconContainer.firstChild
@@ -167,17 +159,12 @@ function getLocalTime(utc, timezoneOffset) {
   return `${hours}:${minutes}`;
 }
 
-function celsiusToFahrenheit(celsiusTemperature) {
-  return (celsiusTemperature * 9) / 5 + 32;
-}
-
 async function toggleDegrees() {
   // Toggle the degrees symbol F or C
   try {
     const units = degreesCheckbox.checked ? 'imperial' : 'metric';
     const newWeatherData = await getWeatherData(city.textContent, units);
     displayInfo(extractWeatherData(newWeatherData), units === 'metric');
-    // displayCity(searchBar.value);
     clearError();
   } catch (error) {
     displayError();
@@ -276,10 +263,7 @@ function loadDefaultEventListeners() {
 }
 
 function displayError() {
-  //   const errorDiv = document.createElement('div');
-  //   errorDiv.classList.add('error');
   errorContainer.textContent = 'City not found. Please enter a valid city name';
-  //   searchForm.parentNode.insertBefore(errorDiv, searchForm.nextSibling);
 }
 
 function clearError() {

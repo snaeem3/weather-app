@@ -170,7 +170,6 @@ table {
   table-layout: fixed;
   /* width: 100%; */
   border-collapse: collapse;
-  /* background: rgb(196, 236, 255); */
   border-radius: var(--border-radius-default);
   /* padding: var(--section-padding); */
   /* border-top: solid 1px gray; */
